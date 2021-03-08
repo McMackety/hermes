@@ -1,0 +1,60 @@
+syntax = "proto3";
+package hades;
+
+service ConnectionAPI {
+  rpc CreateConnection (ConnectionRequest) returns (CreateConnectionReply);
+  rpc DeleteConnection (ConnectionID) returns (Successful);
+  rpc UpdateConnection (ConnectionRequest) returns (Successful);
+  rpc GetConnection (ConnectionID) returns (Connection);
+}
+
+service RoomAPI {
+  rpc CreateRoom (Room) returns (Successful);
+  rpc DeleteRoom (RoomID) returns (Successful);
+  rpc UpdateRoom (Room) returns (Successful);
+  rpc GetRoom (RoomID) returns (Room);
+}
+
+message ConnectionRequest {
+  string user_id = 1; // This is the Unique Identifier of the connection.
+  string room_id = 2;
+  bool muted = 3; // This is whether or not the user can speak.
+  bool deafened = 4; // This is whether or not the user can listen in.
+  bool video = 5; // This is whether or not the user can start video.
+  bool canScreenShare = 6; // This is whether or not the user can start screenshare.
+}
+
+message Connection {
+  string user_id = 1; // This is the Unique Identifier of the connection.
+  string room_id = 2;
+  bool muted = 3; // This is whether or not the user can speak.
+  bool deafened = 4; // This is whether or not the user can listen in.
+  bool video = 5; // This is whether or not the user can start video.
+  bool canScreenShare = 6; // This is whether or not the user can start screenshare.
+  string token = 7; // The token used to connect to the Websocket.
+  uint32 port = 8; // The port used for RTP communications for this user.
+}
+
+message CreateConnectionReply {
+  string token = 1; // The token used to connect to the Websocket.
+  uint32 port = 2; // The port used for RTP communications for this user.
+}
+
+message ConnectionID {
+  string user_id = 1; // This is the Unique Identifier of the connection.
+}
+
+message Room {
+  string room_id = 1; // This is the Unique Identifier of the room.
+  int32 max_connections = 2;
+  int32 max_audio_participants = 3;
+  int32 max_video_participants = 4;
+  int32 max_screenshare_participants = 5;
+}
+
+message RoomID {
+  string room_id = 1; // This is the Unique Identifier of the connection.
+}
+
+message Successful {
+}
